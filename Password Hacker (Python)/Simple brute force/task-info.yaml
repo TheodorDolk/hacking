@@ -153,5 +153,8 @@ files:
       if __name__ == '__main__':    test = Hacking('hacking.hack')    test.run_tests()    test.stop_server()
     learner_created: false
 feedback_link: https://hyperskill.org/projects/80/stages/443/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sun, 10 Sep 2023 18:52:58 UTC"
 record: -1
