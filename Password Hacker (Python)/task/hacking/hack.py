@@ -1,3 +1,5 @@
+# step 1
+
 import sys
 import socket
 cmd_args = sys.argv
