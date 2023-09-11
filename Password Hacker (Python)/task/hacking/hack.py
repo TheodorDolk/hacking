@@ -1,4 +1,4 @@
-# step 2
+# step 3
 import itertools
 import sys
 import socket
@@ -8,28 +8,22 @@ IP = cmd_args[1]
 port = int(cmd_args[2])
 address = (IP, port)
 
-
-def iterate_passwords(client):
-    counter = 1
-    pass_cracked = False
-    while not pass_cracked:
-        repeat = counter
-        passwords = itertools.product("abcdefghijklmnopqrstuvwxyz0123456789", repeat=repeat)
-        # test every combination and send it to server
-        for password_tuple in passwords:
-            password = "".join(password_tuple)
-            password_byte = password.encode()
-            client.send(password_byte)
-            response_byte = client_socket.recv(1024)
-            response = response_byte.decode()
-            if response == "Connection success!":
-                pass_cracked = True
-                print(password)
-            elif response == "Too many attempts":
-                return
-        counter += 1
-
-
 with socket.socket() as client_socket:
     client_socket.connect(address)
-    iterate_passwords(client_socket)
+    with open(
+            r"C:\Users\theod\PycharmProjects\Password Hacker (Python)1\Password Hacker (Python)\task\hacking\passwords.txt",
+            "r") as passwords_file:
+        for password in passwords_file:
+            # remove newline character
+            password = password[:-1]
+            for bit_pattern in itertools.product([0, 1], repeat=len(password)):
+                combination = ''.join(char.upper() if bit else char for char, bit in zip(password, bit_pattern))
+                password_byte = combination.encode()
+                client_socket.send(password_byte)
+                response_byte = client_socket.recv(1024)
+                response = response_byte.decode()
+                if response == "Connection success!":
+                    print(combination)
+                    exit()
+                if response == "Too many attempts":
+                    exit()
